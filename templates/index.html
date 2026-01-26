@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 전산 공지 생성기</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🤖 AI 전산 공지 생성기</h1>
+            <p class="subtitle">Google Gemini 기반 자동 공지 생성 시스템</p>
+        </header>
+
+        <main>
+            <!-- 입력 폼 -->
+            <section class="form-section">
+                <h2>📝 공지 정보 입력</h2>
+                
+                <form id="noticeForm">
+                    <!-- 기본 정보 -->
+                    <div class="form-group">
+                        <label for="date">공지 날짜 *</label>
+                        <input type="date" id="date" name="date" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="systems">적용 시스템 *</label>
+                        <select id="systems" name="systems" multiple required>
+                            {% for system in systems %}
+                            <option value="{{ system }}">{{ system }}</option>
+                            {% endfor %}
+                        </select>
+                        <small>Ctrl/Cmd를 누른 채로 여러 개 선택 가능</small>
+                    </div>
+
+                    <!-- 업데이트 현황 -->
+                    <div class="summary-section">
+                        <h3>업데이트 현황 요약</h3>
+                        
+                        <div class="count-grid">
+                            <div class="count-item">
+                                <label for="completed_count">업데이트 완료</label>
+                                <input type="number" id="completed_count" name="completed_count" min="0" value="0">
+                            </div>
+                            
+                            <div class="count-item">
+                                <label for="new_count">신규 업데이트</label>
+                                <input type="number" id="new_count" name="new_count" min="0" value="0">
+                            </div>
+                            
+                            <div class="count-item">
+                                <label for="partial_count">일부반영/구조변경</label>
+                                <input type="number" id="partial_count" name="partial_count" min="0" value="0">
+                            </div>
+                            
+                            <div class="count-item">
+                                <label for="scheduled_count">업데이트 예정</label>
+                                <input type="number" id="scheduled_count" name="scheduled_count" min="0" value="0">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 말머리 태그 참고 -->
+                    <div class="tag-reference">
+                        <h3>📌 말머리 태그 참고</h3>
+                        <ul>
+                            {% for tag, desc in tag_types.items() %}
+                            <li><strong>[{{ tag }}]</strong>: {{ desc }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    <!-- 업데이트 상세 정보 -->
+                    <div class="form-group">
+                        <label for="update_details">업데이트 상세 정보 *</label>
+                        <textarea id="update_details" name="update_details" rows="15" required 
+                                  placeholder="예시:
+
+■ 업데이트 완료
+- 넷오피스
+  - [개선] 전자결재문서함 검색 기능 개선 (2025.11.06)
+    - 배경: 결재 진행 상태 확인 및 특정 문서 검색 편의성 강화
+    - 대상: 전사 직원
+    - 변경점: 진행상태 필터 및 결재의견 유무 필터 추가, 문서 제목/내용 키워드 검색 기능 도입
+    - 경로: 넷오피스 > 전자결재 시스템 > 상단 상세검색 버튼
+
+■ 신규 업데이트
+- Smart DERP/POS
+  - [개발] 협력사별 매입반품 현황 메뉴 신설 (2025.11.19)
+    - 배경: 협력사 단위로 전 사업장의 매입반품 이력을 한눈에 집계
+    - 대상: 영업기획팀
+    - 변경점: 협력사단위 전 사업장 매입반품 현황 확인
+    - 경로: D-ERP > 재고 > 협력사 관리 > 협력사별 매입반품 현황
+
+■ 업데이트 예정
+- E-Commerce
+  - [개발] 배송예정일 선택 기능 (2025.11.28)
+    - 주문결제 시 고객이 직접 배송 희망일과 시간대 선택하는 기능 추가"></textarea>
+                    </div>
+
+                    <!-- 추가 정보 -->
+                    <div class="form-group">
+                        <label for="additional_info">추가 정보 (선택)</label>
+                        <textarea id="additional_info" name="additional_info" rows="5" 
+                                  placeholder="AI에게 전달할 추가 지시사항이나 참고사항을 입력하세요."></textarea>
+                    </div>
+
+                    <!-- 버튼 -->
+                    <div class="button-group">
+                        <button type="submit" class="btn btn-primary" id="generateBtn">
+                            🚀 공지 생성하기
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="resetForm()">
+                            🔄 초기화
+                        </button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- 결과 출력 -->
+            <section class="result-section" id="resultSection" style="display: none;">
+                <h2>✅ 생성된 공지</h2>
+                
+                <div class="result-actions">
+                    <button class="btn btn-small" onclick="copyToClipboard()">📋 복사하기</button>
+                    <button class="btn btn-small" onclick="downloadNotice()">💾 다운로드</button>
+                </div>
+                
+                <div class="result-content" id="resultContent"></div>
+            </section>
+
+            <!-- 로딩 -->
+            <div class="loading" id="loading" style="display: none;">
+                <div class="spinner"></div>
+                <p>AI가 공지를 생성하고 있습니다...</p>
+            </div>
+        </main>
+
+        <footer>
+            <p>Powered by Google Gemini AI | FastAPI</p>
+        </footer>
+    </div>
+
+    <script src="/static/js/script.js"></script>
+</body>
+</html>

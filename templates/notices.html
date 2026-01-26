@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>공지 관리 - AI 전산 공지 생성기</title>
+    <link rel="stylesheet" href="/static/css/notices.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 네비게이션 -->
+        <nav class="navbar">
+            <div class="nav-brand">
+                <h1>🤖 AI 전산 공지 생성기</h1>
+            </div>
+            <div class="nav-links">
+                <a href="/" class="nav-link">💬 채팅</a>
+                <a href="/notices" class="nav-link active">📋 공지 관리</a>
+            </div>
+        </nav>
+
+        <main class="main-content">
+            <div class="page-header">
+                <h2>📋 공지 관리</h2>
+                <button class="btn btn-primary" onclick="location.href='/'">
+                    ➕ 새 공지 작성
+                </button>
+            </div>
+
+            <!-- 검색 및 필터 -->
+            <div class="search-section">
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    class="search-input" 
+                    placeholder="공지 제목 또는 내용 검색..."
+                    onkeyup="filterNotices()"
+                >
+                <select id="systemFilter" class="filter-select" onchange="filterNotices()">
+                    <option value="">모든 시스템</option>
+                    <option value="Smart DERP/POS">Smart DERP/POS</option>
+                    <option value="넷오피스">넷오피스</option>
+                    <option value="E-Commerce">E-Commerce</option>
+                </select>
+            </div>
+
+            <!-- 공지 목록 -->
+            <div class="notices-grid" id="noticesGrid">
+                <div class="loading-state">
+                    <div class="spinner"></div>
+                    <p>공지를 불러오는 중...</p>
+                </div>
+            </div>
+
+            <!-- 빈 상태 -->
+            <div class="empty-state" id="emptyState" style="display: none;">
+                <div class="empty-icon">📭</div>
+                <h3>생성된 공지가 없습니다</h3>
+                <p>AI 채팅을 통해 첫 번째 공지를 작성해보세요!</p>
+                <button class="btn btn-primary" onclick="location.href='/'">
+                    💬 채팅 시작하기
+                </button>
+            </div>
+        </main>
+    </div>
+
+    <!-- 공지 상세 모달 -->
+    <div class="modal" id="noticeModal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">공지 상세</h3>
+                <button class="btn-close" onclick="closeModal()">✕</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <div class="notice-detail">
+                    <div class="detail-section">
+                        <label>제목</label>
+                        <div id="detailTitle"></div>
+                    </div>
+                    <div class="detail-section">
+                        <label>날짜</label>
+                        <div id="detailDate"></div>
+                    </div>
+                    <div class="detail-section">
+                        <label>적용 시스템</label>
+                        <div id="detailSystems"></div>
+                    </div>
+                    <div class="detail-section">
+                        <label>내용</label>
+                        <pre id="detailContent"></pre>
+                    </div>
+                    <div class="detail-meta">
+                        <small>생성일: <span id="detailCreated"></span></small>
+                        <small>수정일: <span id="detailUpdated"></span></small>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="copyNoticeContent()">📋 복사</button>
+                <button class="btn btn-secondary" onclick="downloadNoticeContent()">💾 다운로드</button>
+                <button class="btn btn-warning" onclick="editNotice()">✏️ 수정</button>
+                <button class="btn btn-danger" onclick="deleteNoticeConfirm()">🗑️ 삭제</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 수정 모달 -->
+    <div class="modal" id="editModal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>공지 수정</h3>
+                <button class="btn-close" onclick="closeEditModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <form id="editForm">
+                    <input type="hidden" id="editNoticeId">
+                    
+                    <div class="form-group">
+                        <label for="editTitle">제목</label>
+                        <input type="text" id="editTitle" class="form-input" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editDate">날짜</label>
+                        <input type="date" id="editDate" class="form-input" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editSystems">적용 시스템</label>
+                        <select id="editSystems" class="form-input" multiple>
+                            <option value="Smart DERP/POS">Smart DERP/POS</option>
+                            <option value="넷오피스">넷오피스</option>
+                            <option value="E-Commerce">E-Commerce</option>
+                        </select>
+                        <small>Ctrl/Cmd를 누른 채로 여러 개 선택</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editContent">내용</label>
+                        <textarea id="editContent" class="form-textarea" rows="15" required></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeEditModal()">취소</button>
+                <button class="btn btn-primary" onclick="saveNoticeEdit()">💾 저장</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/notices.js"></script>
+</body>
+</html>

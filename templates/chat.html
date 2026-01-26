@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 전산 공지 생성기 - 채팅</title>
+    <link rel="stylesheet" href="/static/css/chat.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 네비게이션 -->
+        <nav class="navbar">
+            <div class="nav-brand">
+                <h1>🤖 AI 전산 공지 생성기</h1>
+            </div>
+            <div class="nav-links">
+                <a href="/" class="nav-link active">💬 채팅</a>
+                <a href="/notices" class="nav-link">📋 공지 관리</a>
+            </div>
+        </nav>
+
+        <div class="main-layout">
+            <!-- 사이드바 -->
+            <aside class="sidebar">
+                <div class="sidebar-header">
+                    <h3>📌 가이드</h3>
+                </div>
+                
+                <div class="guide-section">
+                    <h4>💡 사용 방법</h4>
+                    <ol>
+                        <li>AI와 자연스럽게 대화하세요</li>
+                        <li>공지에 필요한 정보를 제공하세요</li>
+                        <li>AI가 공지문을 생성합니다</li>
+                        <li>생성된 공지는 자동 저장됩니다</li>
+                    </ol>
+                </div>
+
+                <div class="guide-section">
+                    <h4>🏷️ 말머리 태그</h4>
+                    <ul class="tag-list">
+                        {% for tag, desc in tag_types.items() %}
+                        <li><strong>[{{ tag }}]</strong><br>{{ desc }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div class="guide-section">
+                    <h4>🖥️ 시스템</h4>
+                    <ul>
+                        {% for system in systems %}
+                        <li>{{ system }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <button class="btn-clear" onclick="clearChat()">
+                    🗑️ 대화 초기화
+                </button>
+            </aside>
+
+            <!-- 채팅 영역 -->
+            <main class="chat-container">
+                <div class="chat-header">
+                    <div class="chat-status">
+                        <span class="status-indicator online"></span>
+                        <span>AI 어시스턴트</span>
+                    </div>
+                </div>
+
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message assistant">
+                        <div class="message-avatar">🤖</div>
+                        <div class="message-content">
+                            <div class="message-text">
+                                안녕하세요! 전산 공지문 작성을 도와드리는 AI 어시스턴트입니다.<br><br>
+                                어떤 공지를 작성하시겠어요? 다음 정보를 알려주세요:<br>
+                                - 공지 날짜<br>
+                                - 적용 시스템<br>
+                                - 업데이트 내용<br><br>
+                                편하게 대화하듯이 말씀해주시면 됩니다! 😊
+                            </div>
+                            <div class="message-time">방금 전</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chat-input-container">
+                    <form id="chatForm" class="chat-input-form">
+                        <textarea 
+                            id="messageInput" 
+                            placeholder="메시지를 입력하세요... (Enter로 전송, Shift+Enter로 줄바꿈)"
+                            rows="1"
+                        ></textarea>
+                        <button type="submit" class="btn-send" id="sendBtn">
+                            <span>보내기</span>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M2 10L18 10M18 10L11 3M18 10L11 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+            </main>
+
+            <!-- 생성된 공지 미리보기 -->
+            <aside class="preview-panel" id="previewPanel" style="display: none;">
+                <div class="preview-header">
+                    <h3>✅ 생성된 공지</h3>
+                    <button class="btn-close" onclick="closePreview()">✕</button>
+                </div>
+                <div class="preview-content" id="previewContent"></div>
+                <div class="preview-actions">
+                    <button class="btn btn-primary" onclick="viewAllNotices()">
+                        📋 공지 목록 보기
+                    </button>
+                    <button class="btn btn-secondary" onclick="copyNotice()">
+                        📋 복사하기
+                    </button>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <script src="/static/js/chat.js"></script>
+</body>
+</html>
