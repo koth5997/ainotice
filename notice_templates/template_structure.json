@@ -1,0 +1,60 @@
+{
+  "template_structure": {
+    "title": "정기 전산 업데이트(YYYY.MM.DD)",
+    "sections": {
+      "summary": {
+        "order": 1,
+        "title": "요약",
+        "fields": [
+          "적용시스템",
+          "업데이트 완료 건수",
+          "신규 업데이트 건수",
+          "일부반영 or 구조변경 건수",
+          "업데이트 예정 건수"
+        ]
+      },
+      "completed": {
+        "order": 2,
+        "title": "업데이트 완료",
+        "description": "전 공지에서 이미 반영되었고, 추가 조치가 필요 없는 항목",
+        "item_structure": {
+          "simple": ["말머리", "업데이트 내용", "날짜"],
+          "detailed": {
+            "fields": ["말머리", "업데이트 내용", "날짜", "배경", "대상", "변경점", "경로"]
+          }
+        }
+      },
+      "new_updates": {
+        "order": 3,
+        "title": "신규 업데이트",
+        "description": "전 공지 업데이트 예정에 없던 추가 사항"
+      },
+      "partial_or_structural": {
+        "order": 4,
+        "title": "일부 반영 or 구조 변경",
+        "fields": ["변경 전 경로(As-Is)", "변경 후 경로(To-Be)", "변경 사항"]
+      },
+      "scheduled": {
+        "order": 5,
+        "title": "업데이트 예정",
+        "item_structure": ["말머리", "기능명", "예정일", "간단한 내용"]
+      }
+    }
+  },
+  "tag_types": {
+    "개선": "기존에 있던 기능을 더 좋게 만드는 경우",
+    "개발": "기존에 없던 기능이 새로 생긴 경우",
+    "수정": "오류나 버그를 고친 경우",
+    "UI변경": "메뉴 위치나 화면 구성이 바뀐 경우"
+  },
+  "writing_principles": [
+    "오류 수정이나 단순 개선은 Why/How/Who/What 생략하고 리스트 형태로 나열",
+    "기능 추가, 사용자에게 영향을 미치는 개선은 Why/How/Who/What 필요",
+    "말머리, 내용 작성 순서: 개발 > 개선 > 수정"
+  ],
+  "systems": [
+    "Smart DERP/POS",
+    "넷오피스",
+    "E-Commerce"
+  ]
+}
