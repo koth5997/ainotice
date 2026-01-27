@@ -1,56 +1,56 @@
 // 현재 날짜를 기본값으로 설정
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const dateInput = document.getElementById('date');
     const today = new Date().toISOString().split('T')[0];
     dateInput.value = today;
 });
 
 // 폼 제출 처리
-document.getElementById('noticeForm').addEventListener('submit', async function(e) {
+document.getElementById('noticeForm').addEventListener('submit', async function (e) {
     e.preventDefault();
-    
+
     const generateBtn = document.getElementById('generateBtn');
     const loading = document.getElementById('loading');
     const resultSection = document.getElementById('resultSection');
-    
+
     // 버튼 비활성화 및 로딩 표시
     generateBtn.disabled = true;
     generateBtn.textContent = '생성 중...';
     loading.style.display = 'block';
     resultSection.style.display = 'none';
-    
+
     try {
         // 폼 데이터 수집
         const formData = new FormData(this);
-        
+
         // 선택된 시스템들을 쉼표로 구분된 문자열로 변환
         const systemsSelect = document.getElementById('systems');
         const selectedSystems = Array.from(systemsSelect.selectedOptions)
             .map(option => option.value)
             .join(', ');
         formData.set('systems', selectedSystems);
-        
+
         // API 호출
         const response = await fetch('/generate-notice', {
             method: 'POST',
             body: formData
         });
-        
+
         const data = await response.json();
-        
+
         if (data.success) {
             // 결과 표시
             document.getElementById('resultContent').textContent = data.notice;
             resultSection.style.display = 'block';
-            
+
             // 결과 섹션으로 스크롤
             resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            
+
             showNotification('공지가 성공적으로 생성되었습니다!', 'success');
         } else {
             throw new Error(data.message || '공지 생성에 실패했습니다.');
         }
-        
+
     } catch (error) {
         console.error('Error:', error);
         showNotification('오류: ' + error.message, 'error');
@@ -65,7 +65,7 @@ document.getElementById('noticeForm').addEventListener('submit', async function(
 // 클립보드에 복사
 function copyToClipboard() {
     const content = document.getElementById('resultContent').textContent;
-    
+
     navigator.clipboard.writeText(content).then(() => {
         showNotification('클립보드에 복사되었습니다!', 'success');
     }).catch(err => {
@@ -78,13 +78,13 @@ function downloadNotice() {
     const content = document.getElementById('resultContent').textContent;
     const dateInput = document.getElementById('date').value;
     const filename = `전산공지_${dateInput.replace(/-/g, '')}.txt`;
-    
+
     const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
     link.download = filename;
     link.click();
-    
+
     showNotification('파일이 다운로드되었습니다!', 'success');
 }
 
@@ -106,12 +106,12 @@ function showNotification(message, type = 'info') {
     if (existingNotif) {
         existingNotif.remove();
     }
-    
+
     // 새 알림 생성
     const notification = document.createElement('div');
     notification.className = `notification notification-${type}`;
     notification.textContent = message;
-    
+
     // 스타일 적용
     Object.assign(notification.style, {
         position: 'fixed',
@@ -119,8 +119,8 @@ function showNotification(message, type = 'info') {
         right: '20px',
         padding: '1rem 1.5rem',
         borderRadius: '0.5rem',
-        backgroundColor: type === 'success' ? '#10b981' : 
-                        type === 'error' ? '#ef4444' : '#3b82f6',
+        backgroundColor: type === 'success' ? '#10b981' :
+            type === 'error' ? '#ef4444' : '#3b82f6',
         color: 'white',
         fontWeight: '600',
         boxShadow: '0 10px 25px rgba(0, 0, 0, 0.2)',
@@ -128,9 +128,9 @@ function showNotification(message, type = 'info') {
         animation: 'slideInRight 0.3s ease',
         maxWidth: '400px'
     });
-    
+
     document.body.appendChild(notification);
-    
+
     // 3초 후 자동 제거
     setTimeout(() => {
         notification.style.animation = 'slideOutRight 0.3s ease';
@@ -166,12 +166,12 @@ style.textContent = `
 document.head.appendChild(style);
 
 // 텍스트 영역 자동 높이 조절
-document.getElementById('update_details').addEventListener('input', function() {
+document.getElementById('update_details').addEventListener('input', function () {
     this.style.height = 'auto';
     this.style.height = this.scrollHeight + 'px';
 });
 
-document.getElementById('additional_info').addEventListener('input', function() {
+document.getElementById('additional_info').addEventListener('input', function () {
     this.style.height = 'auto';
     this.style.height = this.scrollHeight + 'px';
 });
