@@ -191,6 +191,12 @@ body {
     -webkit-box-orient: vertical;
     overflow: hidden;
     margin-bottom: 1rem;
+    word-wrap: break-word;
+    /* 추가 */
+    word-break: break-word;
+    /* 추가 */
+    overflow-wrap: break-word;
+    /* 추가 */
 }
 
 .notice-footer {
@@ -245,8 +251,13 @@ body {
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 /* 버튼 */
@@ -314,14 +325,20 @@ body {
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 .modal-content {
     background: white;
     border-radius: 1rem;
-    max-width: 800px;
+    max-width: 1000px;
+    /* 800px → 1000px로 증가 */
     width: 90%;
     max-height: 90vh;
     display: flex;
@@ -335,6 +352,7 @@ body {
         opacity: 0;
         transform: translateY(20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -378,7 +396,14 @@ body {
 .modal-body {
     padding: 2rem;
     overflow-y: auto;
+    /* 세로 스크롤 활성화 */
+    overflow-x: hidden;
+    /* 가로 스크롤 숨김 */
     flex: 1;
+    max-height: calc(90vh - 200px);
+    /* 헤더/푸터 제외한 최대 높이 */
+    min-height: 200px;
+    /* 최소 높이 보장 */
 }
 
 .modal-footer {
@@ -403,7 +428,7 @@ body {
     margin-bottom: 0.5rem;
 }
 
-.detail-section > div,
+.detail-section>div,
 .detail-section pre {
     padding: 1rem;
     background: var(--bg-color);
@@ -414,9 +439,14 @@ body {
 .detail-section pre {
     white-space: pre-wrap;
     word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
     line-height: 1.8;
-    max-height: 400px;
-    overflow-y: auto;
+    /* max-height 제거 - 모달이 스크롤 담당 */
+    overflow-y: visible;
+    /* auto → visible */
+    max-width: 100%;
+    overflow-x: auto;
 }
 
 .detail-meta {
@@ -478,31 +508,91 @@ body {
     .main-content {
         padding: 1rem;
     }
-    
+
     .page-header {
         flex-direction: column;
         align-items: flex-start;
         gap: 1rem;
     }
-    
+
     .search-section {
         flex-direction: column;
     }
-    
+
     .filter-select {
         width: 100%;
     }
-    
+
     .notices-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .modal-content {
         width: 95%;
         max-height: 95vh;
     }
-    
+
     .modal-footer {
         flex-wrap: wrap;
     }
+}
+
+/* 공지 상세보기 - 스크롤 및 줄바꿈 추가 개선 */
+#detailContent {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
+    overflow-x: auto;
+    font-family: 'Noto Sans KR', 'Malgun Gothic', sans-serif;
+    line-height: 1.8;
+}
+
+/* 미리보기 패널 내용 개선 (chat.html용) */
+.preview-content {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    overflow-x: hidden;
+    line-height: 1.8;
+}
+
+/* 공지 제목도 긴 텍스트 처리 */
+.notice-title {
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+
+/* 모달 내 텍스트 전체 개선 */
+.modal-body {
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+
+/* 공지 상세보기 추가 개선 */
+.notice-detail {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+.detail-section {
+    max-width: 100%;
+    overflow: visible;
+}
+
+/* 모달 내 모든 텍스트 요소 개선 */
+.modal-body * {
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+
+/* pre 태그 내부 내용 */
+.detail-section pre {
+    overflow: visible !important;
+    max-height: none !important;
 }
