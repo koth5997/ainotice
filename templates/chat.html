@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI 전산 공지 생성기 - 채팅</title>
     <link rel="stylesheet" href="/static/css/chat.css">
 </head>
+
 <body>
     <div class="container">
         <!-- 네비게이션 -->
@@ -25,7 +27,7 @@
                 <div class="sidebar-header">
                     <h3>📌 가이드</h3>
                 </div>
-                
+
                 <div class="guide-section">
                     <h4>💡 사용 방법</h4>
                     <ol>
@@ -37,14 +39,16 @@
                 </div>
 
                 <div class="guide-section">
-                    <h4>🏷️ 말머리 태그</h4>
+                    <h4>📋 공지 구조</h4>
                     <ul class="tag-list">
-                        {% for tag, desc in tag_types.items() %}
-                        <li><strong>[{{ tag }}]</strong><br>{{ desc }}</li>
-                        {% endfor %}
+                        <li><strong>1. 제목</strong><br>정기 전산 업데이트(날짜)</li>
+                        <li><strong>2. 요약</strong><br>적용 시스템 및 업데이트 건수</li>
+                        <li><strong>3. 업데이트 완료</strong><br>완료된 업데이트 내역</li>
+                        <li><strong>4. 신규 업데이트</strong><br>새로 추가된 기능</li>
+                        <li><strong>5. 일부반영 or 구조변경</strong><br>진행 중이거나 변경된 사항</li>
+                        <li><strong>6. 업데이트 예정</strong><br>향후 예정된 업데이트</li>
                     </ul>
                 </div>
-
                 <div class="guide-section">
                     <h4>🖥️ 시스템</h4>
                     <ul>
@@ -77,7 +81,7 @@
                                 어떤 공지를 작성하시겠어요? 다음 정보를 알려주세요:<br>
                                 - 공지 날짜<br>
                                 - 적용 시스템<br>
-                                - 업데이트 내용<br><br>
+                                - 업데이트 완료, 신규 업데이트, 일부반영 or 구조 변경, 업데이트 예정의 건수<br><br>
                                 편하게 대화하듯이 말씀해주시면 됩니다! 😊
                             </div>
                             <div class="message-time">방금 전</div>
@@ -87,15 +91,13 @@
 
                 <div class="chat-input-container">
                     <form id="chatForm" class="chat-input-form">
-                        <textarea 
-                            id="messageInput" 
-                            placeholder="메시지를 입력하세요... (Enter로 전송, Shift+Enter로 줄바꿈)"
-                            rows="1"
-                        ></textarea>
+                        <textarea id="messageInput" placeholder="메시지를 입력하세요... (Enter로 전송, Shift+Enter로 줄바꿈)"
+                            rows="1"></textarea>
                         <button type="submit" class="btn-send" id="sendBtn">
                             <span>보내기</span>
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                <path d="M2 10L18 10M18 10L11 3M18 10L11 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M2 10L18 10M18 10L11 3M18 10L11 17" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
                         </button>
                     </form>
@@ -123,4 +125,5 @@
 
     <script src="/static/js/chat.js"></script>
 </body>
+
 </html>
