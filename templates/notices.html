@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>공지 관리 - AI 전산 공지 생성기</title>
     <link rel="stylesheet" href="/static/css/notices.css">
 </head>
+
 <body>
     <div class="container">
         <!-- 네비게이션 -->
@@ -29,13 +31,8 @@
 
             <!-- 검색 및 필터 -->
             <div class="search-section">
-                <input 
-                    type="text" 
-                    id="searchInput" 
-                    class="search-input" 
-                    placeholder="공지 제목 또는 내용 검색..."
-                    onkeyup="filterNotices()"
-                >
+                <input type="text" id="searchInput" class="search-input" placeholder="공지 제목 또는 내용 검색..."
+                    onkeyup="filterNotices()">
                 <select id="systemFilter" class="filter-select" onchange="filterNotices()">
                     <option value="">모든 시스템</option>
                     <option value="Smart DERP/POS">Smart DERP/POS</option>
@@ -114,7 +111,7 @@
             <div class="modal-body">
                 <form id="editForm">
                     <input type="hidden" id="editNoticeId">
-                    
+
                     <div class="form-group">
                         <label for="editTitle">제목</label>
                         <input type="text" id="editTitle" class="form-input" required>
@@ -150,4 +147,5 @@
 
     <script src="/static/js/notices.js"></script>
 </body>
+
 </html>
